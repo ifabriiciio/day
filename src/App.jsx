@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import { createPortal } from "react-dom";
 import { motion } from "framer-motion";
 import {
   ArrowUpRight,
@@ -91,26 +90,6 @@ function Icon({ name, className = "" }) {
         <circle cx="9" cy="8" r="2.6" />
         <path d="M3.7 18c.5-2.65 2.25-4 5.3-4 1.55 0 2.75.35 3.65 1.05" />
         <path d="M15.5 6a2.4 2.4 0 0 1 0 4.7M15 14c2.95 0 4.7 1.3 5.3 4" />
-      </svg>
-    );
-  }
-
-  if (name === "badge-heart") {
-    return (
-      <svg {...common}>
-        <defs>
-          <linearGradient id="badge-heart-gradient" x1="3" y1="3" x2="21" y2="21">
-            <stop stopColor="#ffd5e2" />
-            <stop offset="1" stopColor="#ed3158" />
-          </linearGradient>
-        </defs>
-        <path
-          d="M20.3 5.8a4.5 4.5 0 0 0-6.35 0L12 7.75 10.05 5.8A4.5 4.5 0 0 0 3.7 12.15l7.6 7.2a1 1 0 0 0 1.4 0l7.6-7.2a4.5 4.5 0 0 0 0-6.35Z"
-          fill="url(#badge-heart-gradient)"
-          stroke="#ffe3eb"
-          strokeLinejoin="round"
-          strokeWidth="1"
-        />
       </svg>
     );
   }
@@ -239,7 +218,6 @@ function App() {
   const [hasEntered, setHasEntered] = useState(false);
   const [activeSection, setActiveSection] = useState("perfil");
   const [visibleQuoteLength, setVisibleQuoteLength] = useState(0);
-  const [isMarriedOpen, setIsMarriedOpen] = useState(false);
   const [isMusicOpen, setIsMusicOpen] = useState(false);
   const [peelBurst, setPeelBurst] = useState(0);
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
@@ -392,26 +370,6 @@ function App() {
     return () => window.clearInterval(typingInterval);
   }, [activeSection]);
 
-  useEffect(() => {
-    if (!isMarriedOpen) {
-      return undefined;
-    }
-
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    const closeOnEscape = (event) => {
-      if (event.key === "Escape") {
-        setIsMarriedOpen(false);
-      }
-    };
-
-    window.addEventListener("keydown", closeOnEscape);
-    return () => {
-      document.body.style.overflow = previousOverflow;
-      window.removeEventListener("keydown", closeOnEscape);
-    };
-  }, [isMarriedOpen]);
-
   if (!hasEntered) {
     return <Inicio onEnter={() => setHasEntered(true)} />;
   }
@@ -450,16 +408,6 @@ function App() {
               <span className="portrait-sparkle sparkle-bottom" aria-hidden="true">
                 ✧
               </span>
-              <button
-                className="heart-badge"
-                type="button"
-                aria-label="Abrir apartado Married"
-                aria-haspopup="dialog"
-                aria-expanded={isMarriedOpen}
-                onClick={() => setIsMarriedOpen(true)}
-              >
-                <Icon name="badge-heart" />
-              </button>
             </div>
 
             <h1 className="profile-name">Day</h1>
@@ -643,103 +591,6 @@ function App() {
           </div>
         </div>
       </section>
-
-      {isMarriedOpen && (
-        createPortal(
-          <motion.div
-            className="married-overlay"
-            role="presentation"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onMouseDown={(event) => {
-              if (event.target === event.currentTarget) {
-                setIsMarriedOpen(false);
-              }
-            }}
-          >
-            <motion.section
-              className="married-dialog"
-              role="dialog"
-              aria-modal="true"
-              aria-labelledby="married-title"
-              initial={{ opacity: 0, y: 24, scale: 0.96 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 18, scale: 0.97 }}
-              transition={{ type: "spring", stiffness: 180, damping: 22 }}
-            >
-              <div className="married-dialog-glow" aria-hidden="true" />
-              <button
-                className="married-close"
-                type="button"
-                aria-label="Cerrar apartado Married"
-                onClick={() => setIsMarriedOpen(false)}
-              >
-                <X size={19} strokeWidth={1.6} />
-              </button>
-
-              <div className="married-photo-column">
-                <div className="married-photo-frame">
-                  <span className="married-initials" aria-label="DF">DF</span>
-                </div>
-                <span className="married-photo-caption">UN LAZO ESPECIAL</span>
-              </div>
-
-              <div className="married-info">
-                <p className="married-kicker"><span /> PARA SIEMPRE <span /></p>
-                <h2 id="married-title">Married</h2>
-                <p className="married-subtitle">UN VÍNCULO HECHO CON EL CORAZÓN</p>
-
-                <div className="married-details">
-                  <div className="married-detail">
-                    <span className="married-detail-icon" aria-hidden="true">
-                      <UsersRound size={18} strokeWidth={1.5} />
-                    </span>
-                    <span>
-                      <span className="married-detail-label">NOMBRE</span>
-                      <span className="married-detail-value">none</span>
-                    </span>
-                  </div>
-
-                  <div className="married-detail">
-                    <span className="married-detail-icon married-flag-icon">
-                      <CountryFlag code="AR" />
-                    </span>
-                    <span>
-                      <span className="married-detail-label">PAÍS</span>
-                      <span className="married-detail-value">Argentina</span>
-                    </span>
-                  </div>
-
-                  <div className="married-detail">
-                    <span className="married-detail-icon married-scorpio-icon" aria-hidden="true">
-                      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M4 5v10m4-10v10m4-10v10m0-7c0-4 6-4 6 0v8m0 0-3-3m3 3 3-3" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                    </span>
-                    <span>
-                      <span className="married-detail-label">SIGNO</span>
-                      <span className="married-detail-value">Escorpio</span>
-                    </span>
-                  </div>
-                </div>
-
-                <blockquote className="married-quote">
-                  <span aria-hidden="true">“</span>
-                  <p>...</p>
-                </blockquote>
-
-                <div className="married-bottom-mark" aria-hidden="true">
-                  <span />
-                  <Heart size={15} fill="currentColor" strokeWidth={1.2} />
-                  <span />
-                </div>
-              </div>
-            </motion.section>
-          </motion.div>,
-          document.body,
-        )
-      )}
 
       <div
         className={`music-peel${isMusicOpen ? " is-open" : ""}`}

@@ -227,35 +227,6 @@ a {
   font-size: 1.5rem;
 }
 
-.heart-badge {
-  position: absolute;
-  z-index: 3;
-  right: -12px;
-  bottom: 0;
-  display: grid;
-  width: 42px;
-  height: 42px;
-  border: 1px solid rgb(255 190 211 / 74%);
-  border-radius: 50%;
-  background: linear-gradient(145deg, #7c102e, #e53d68 68%, #a70e35);
-  box-shadow: 0 0 17px rgb(218 45 91 / 39%), 0 4px 14px rgb(0 0 0 / 48%);
-  color: inherit;
-  cursor: pointer;
-  place-items: center;
-  transition: transform 180ms ease, box-shadow 180ms ease;
-}
-
-.heart-badge:hover {
-  transform: translateY(-2px) scale(1.05);
-  box-shadow: 0 0 23px rgb(239 71 121 / 62%), 0 4px 14px rgb(0 0 0 / 48%);
-}
-
-.heart-badge svg {
-  width: 22px;
-  height: 22px;
-  animation: heart-beat 2.1s ease-in-out infinite;
-}
-
 .profile-name {
   margin: 11px 0 0;
   background-image:
@@ -1749,29 +1720,6 @@ a:focus-visible {
   50% {
     background-position: -60% 0, 0 0;
     filter: drop-shadow(0 0 11px rgb(229 47 76 / 58%));
-  }
-}
-
-@keyframes heart-beat {
-  0%,
-  100% {
-    transform: scale(1);
-  }
-
-  12% {
-    transform: scale(1.12);
-  }
-
-  24% {
-    transform: scale(1);
-  }
-
-  36% {
-    transform: scale(1.08);
-  }
-
-  48% {
-    transform: scale(1);
   }
 }
 
